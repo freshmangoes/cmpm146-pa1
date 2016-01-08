@@ -38,7 +38,16 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
         curr_cost, curr_node = heappop(queue) #pop least cost node
         if curr_node = destination:
             break
-        else:
+
+        adjacent = adj(curr_node, graph)
+
+        #get (position, cost) from list of adjacent cells
+        for cost, node in adjacent:
+            pathcost = cost + curr_node.pathcost
+            if node is new:
+                dist[cost] = pathcost
+                prev[cost] = node
+                heappush(queue, (cost, adjacent))
 
 
     #list to build path in
