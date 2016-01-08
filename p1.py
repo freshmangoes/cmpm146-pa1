@@ -22,6 +22,25 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
         Otherwise, return None.
 
     """
+
+    dist = {} #distance from source to destination
+    prev = {} #previous node in optimal path from source
+    queue = [] #queue initialization
+
+    dist[initial_position] = 0
+    prev[initial_position] = None #prev from source
+
+    while queue:
+        curr_cost, curr_node = heappop(queue) #pop least cost node
+        if curr_node = destination:
+            break
+        else:
+
+    #list to build path in
+    path = []
+
+
+    return path
     pass
 
 
@@ -56,6 +75,9 @@ def navigation_edges(level, cell):
              ((1,1), 1.4142135623730951),
              ... ]
     """
+
+
+
     pass
 
 
