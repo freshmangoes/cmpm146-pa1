@@ -27,8 +27,12 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
     prev = {} #previous node in optimal path from source
     queue = [] #queue initialization
 
+
     dist[initial_position] = 0
     prev[initial_position] = None #prev from source
+
+    #queue = [(0, start]
+    heappush(queue, (dist[initial_position], initial_position))
 
     while queue:
         curr_cost, curr_node = heappop(queue) #pop least cost node
@@ -36,9 +40,18 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
             break
         else:
 
+
     #list to build path in
     path = []
 
+    while 1:
+        path.append(destination)
+        if destination = initial_position:
+            break
+        destination = dist[destination]
+
+    #path is currently reversed from destination to initial_position so we must reverse it
+    path.reverse()
 
     return path
     pass
