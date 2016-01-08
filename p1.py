@@ -1,3 +1,8 @@
+# Kyle Cilia
+# Dijkstra's in a Dungeon
+# PA1
+# CMPM146
+
 from p1_support import load_level, show_level, save_level_costs
 from math import inf, sqrt
 from heapq import heappop, heappush
