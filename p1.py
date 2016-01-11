@@ -87,7 +87,7 @@ def navigation_edges(level, cell):
                 cost = ((0.5 * xcoord) + (0.5 * ycoord))
                 adjacencyList.append((cost, adjcell))
 
-            # Check to see if change in both x and y is not 0 for second cost forumla
+            # Check to see if change in both x and y is not 0 for second cost formula
             elif deltax != 0 and deltay != 0:
                 cost = ((0.5 * sqrt(2) * xcoord) + (0.5 * sqrt(2) * ycoord))
                 adjacencyList.append((cost, adjcell))
