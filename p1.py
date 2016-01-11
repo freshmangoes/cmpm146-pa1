@@ -38,6 +38,7 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
         curr_cost, curr_node = heappop(queue)  #pop least cost node
         if curr_node == destination:
             break
+        
 
     pass
 
@@ -74,8 +75,7 @@ def navigation_edges(level, cell):
              ... ]
     """
 
-
-    adjacencyList = []
+    adjacencylist = []
     xcoord, ycoord = cell
 
     # Delta x and specified range
@@ -88,21 +88,23 @@ def navigation_edges(level, cell):
             # Check to see if change in x or y is equal to 0 for first cost formula
             if (deltax == 0 and deltay != 0) or (deltax != 0 and deltay == 0):
                 cost = ((0.5 * xcoord) + (0.5 * ycoord))
-                adjacencyList.append((cost, adjcell))
+                adjacencylist.append((cost, adjcell))
 
             # Check to see if change in both x and y is not 0 for second cost formula
             elif deltax != 0 and deltay != 0:
                 cost = ((0.5 * sqrt(2) * xcoord) + (0.5 * sqrt(2) * ycoord))
-                adjacencyList.append((cost, adjcell))
-            # Do nothing if both change in x and y is not 0 because that is the origin cell
+                adjacencylist.append((cost, adjcell))
 
-    return adjacencyList
+            # Do nothing if both change in x and y is not 0 because
+            # that is the origin cell
+    return adjacencylist
 
     pass
 
 
 def test_route(filename, src_waypoint, dst_waypoint):
-    """ Loads a level, searches for a path between the given waypoints, and displays the result.
+    """ Loads a level, searches for a path between the given waypoints,
+        and displays the result.
 
     Args:
         filename: The name of the text file containing the level.
@@ -137,22 +139,21 @@ def cost_to_all_cells(filename, src_waypoint, output_filename):
         output_filename: The filename for the output csv file.
 
     """
-    
+
     # Load and display the level.
     level = load_level(filename)
     show_level(level)
 
     # Retrieve the source coordinates from the level.
     src = level['waypoints'][src_waypoint]
-    
+
     # Calculate the cost to all reachable cells from src and save to a csv file.
     costs_to_all_cells = dijkstras_shortest_path_to_all(src, level, navigation_edges)
     save_level_costs(level, costs_to_all_cells, output_filename)
 
 
 if __name__ == '__main__':
-    filename, src_waypoint, dst_waypoint = 'example.txt', 'a','e'
-
+    filename, src_waypoint, dst_waypoint = 'example.txt', 'a', 'e'
 
     # Use this function call to find the route between two waypoints.
     test_route(filename, src_waypoint, dst_waypoint)
