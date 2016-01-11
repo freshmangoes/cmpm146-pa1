@@ -78,8 +78,11 @@ def navigation_edges(level, cell):
     adjacencyList = []
     xcoord, ycoord = cell
 
+    # Delta x and specified range
     for deltax in (-1, 0, 1):
+        # Delta y and specified range
         for deltay in (-1, 0, 1):
+            # Current delta x and delta y used to find an adjacent cell
             adjcell = (xcoord + deltax, xcoord + deltay)
 
             # Check to see if change in x or y is equal to 0 for first cost formula
