@@ -39,28 +39,6 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
         if curr_node == destination:
             break
 
-        adjacent = adj(curr_node, graph)
-
-        #get (position, cost) from list of adjacent cells
-        for cost, node in adjacent:
-            pathcost = cost + curr_node.pathcost
-            if node is new:  #not sure yet fix this statement
-                dist[cost] = pathcost
-                prev[cost] = node
-                heappush(queue, (cost, adjacent))
-
-    #list to build path in
-    path = []
-    while 1:
-        path.append(destination)
-        if destination == initial_position:
-            break
-        destination = dist[destination]
-
-    #path is currently reversed from destination to initial_position so we must reverse it
-    path.reverse()
-
-    return path
     pass
 
 
@@ -97,6 +75,25 @@ def navigation_edges(level, cell):
     """
 
 
+    adjacencyList = []
+    xcoord, ycoord = cell
+
+    for deltax in (-1, 0, 1):
+        for deltay in (-1, 0, 1):
+            adjcell = (xcoord + deltax, xcoord + deltay)
+
+            # Check to see if change in x or y is equal to 0 for first cost formula
+            if (deltax == 0 and deltay != 0) or (deltax != 0 and deltay == 0):
+                cost = ((0.5 * xcoord) + (0.5 * ycoord))
+                adjacencyList.append((cost, adjcell))
+
+            # Check to see if change in both x and y is not 0 for second cost forumla
+            elif deltax != 0 and deltay != 0:
+                cost = ((0.5 * sqrt(2) * xcoord) + (0.5 * sqrt(2) * ycoord))
+                adjacencyList.append((cost, adjcell))
+            # Do nothing if both change in x and y is not 0 because that is the origin cell
+
+    return adjacencyList
 
     pass
 
@@ -153,8 +150,10 @@ def cost_to_all_cells(filename, src_waypoint, output_filename):
 if __name__ == '__main__':
     filename, src_waypoint, dst_waypoint = 'example.txt', 'a','e'
 
+
     # Use this function call to find the route between two waypoints.
     test_route(filename, src_waypoint, dst_waypoint)
 
     # Use this function to calculate the cost to all reachable cells from an origin point.
     cost_to_all_cells(filename, src_waypoint, 'my_costs.csv')
+
