@@ -109,6 +109,7 @@ def navigation_edges(level, cell):
             distance = sqrt(deltax*deltax + deltay*deltay)
             if distance > 0 and adjcell in level['spaces']:
                 adjacencyList.append(adjcell)
+                
 
             # # Check to see if change in x or y is equal to 0 for first cost formula
             # if (deltax == 0 and deltay != 0) or (deltax != 0 and deltay == 0):

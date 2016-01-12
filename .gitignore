@@ -48,3 +48,6 @@ Temporary Items
 
 # Misc
 .xml
+.idea/misc.xml
+.idea/cmpm146-pa1.iml
+__pycache__/p1_support.cpython-35.pyc
