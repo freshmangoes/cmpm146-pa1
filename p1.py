@@ -23,9 +23,9 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
 
     """
 
-    dist = {} #distance from source to destination
-    prev = {} #previous node in optimal path from source
-    queue = [] #queue initialization
+    dist = {}  # distance from source to destination
+    prev = {}  # previous node in optimal path from source
+    queue = []  # queue initialization
 
 
     dist[initial_position] = 0
@@ -35,10 +35,31 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
     heappush(queue, (dist[initial_position], initial_position))
 
     while queue:
-        curr_cost, curr_node = heappop(queue)  #pop least cost node
+        curr_node = heappop(queue)  # pop least cost node
+        # Once we find the destination, break the loop
         if curr_node == destination:
             break
+        adjacent = adj(graph, curr_node)
 
+        # Pushing the next node into the queue
+        for next in adjacent:
+            if next not in prev:
+                prev[next] = curr_node
+                heappush(queue, curr_node)
+        # Once destination is found, put the path into a list and return it
+        if curr_node == destination:
+            path = []
+            # While there is still a current node, continually append them into the list
+            # in reverse order.
+            while curr_node:
+                path.append(curr_node)
+                curr_node = prev[curr_node]
+            # The list containing the path is now reversed, so we reverse it to find the
+            # true path.
+            path.reverse()
+            return path
+        else:
+            return []
     pass
 
 
@@ -74,26 +95,31 @@ def navigation_edges(level, cell):
              ... ]
     """
 
-
     adjacencyList = []
     xcoord, ycoord = cell
 
     # Delta x and specified range
-    for deltax in (-1, 0, 1):
+    for deltax in [-1, 0, 1]:
         # Delta y and specified range
-        for deltay in (-1, 0, 1):
+        for deltay in [-1, 0, 1]:
+
             # Current delta x and delta y used to find an adjacent cell
-            adjcell = (xcoord + deltax, xcoord + deltay)
+            adjcell = xcoord + deltax, xcoord + deltay
 
-            # Check to see if change in x or y is equal to 0 for first cost formula
-            if (deltax == 0 and deltay != 0) or (deltax != 0 and deltay == 0):
-                cost = ((0.5 * xcoord) + (0.5 * ycoord))
-                adjacencyList.append((cost, adjcell))
+            distance = sqrt(deltax*deltax + deltay*deltay)
+            if distance > 0 and adjcell in level['spaces']:
+                adjacencyList.append(adjcell)
 
-            # Check to see if change in both x and y is not 0 for second cost formula
-            elif deltax != 0 and deltay != 0:
-                cost = ((0.5 * sqrt(2) * xcoord) + (0.5 * sqrt(2) * ycoord))
-                adjacencyList.append((cost, adjcell))
+            # # Check to see if change in x or y is equal to 0 for first cost formula
+            # if (deltax == 0 and deltay != 0) or (deltax != 0 and deltay == 0):
+            #     cost = ((0.5 * xcoord) + (0.5 * ycoord))
+            #     adjacencyList.append((cost, adjcell))
+            #
+            # # Check to see if change in both x and y is not 0 for second cost formula
+            # elif deltax != 0 and deltay != 0:
+            #     cost = ((0.5 * sqrt(2) * xcoord) + (0.5 * (sqrt(2) * ycoord))
+            #     adjacencyList.append((cost, adjcell))
+
             # Do nothing if both change in x and y is not 0 because that is the origin cell
 
     return adjacencyList
