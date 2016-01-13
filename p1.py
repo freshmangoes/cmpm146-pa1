@@ -51,6 +51,7 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
                 prev[acell] = curr_node
                 heappush(queue, (pathcost, acell))
     # Build path to return
+    
     if curr_node == destination:
         path = []
         # Building path in reverse order because we're at the destination
@@ -78,8 +79,9 @@ def dijkstras_shortest_path_to_all(initial_position, graph, adj):
         A dictionary, mapping destination cells to the cost of a path from the initial_position.
     """
 
-
-
+    dist = {}
+    prev = {}
+    queue = []
 
     pass
 
