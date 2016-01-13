@@ -78,20 +78,30 @@ def dijkstras_shortest_path_to_all(initial_position, graph, adj):
     Returns:
         A dictionary, mapping destination cells to the cost of a path from the initial_position.
     """
-
-    dist = {}
-    prev = {}
-    queue = []
-
+    dist = {}  # distance from source to destination
+    prev = {}  # previous node in optimal path from source
+    queue = []  # queue initialization
     dist[initial_position] = 0
-    prev[initial_position] = None
+    prev[initial_position] = None #prev from source
 
-    queue = heappush(queue, (dist[initial_position], initial_position))
+
+    heappush(queue, (dist[initial_position], initial_position))
 
     while queue:
         curr_cost, curr_node = heappop(queue)
-        
+        # Use navigation_edges to get adjacent cells
+        adjacent = adj(graph, curr_node)
+        # Iterate through adjacency list and calculate cost
+        for acell, cost in adjacent:
+            # Variable to store cost of path consisting of current cost and the cost of the
+            # adjacent cell
+            tempcost = curr_cost + cost
 
+            # if acell not in queue or tempcost < dist[acell]:
+            dist[acell] = tempcost
+            prev[acell] = curr_node
+        print(dist)
+    return dist
 
     pass
 
@@ -131,7 +141,7 @@ def navigation_edges(level, cell):
             # if statement for diagonal cost formula, checking if cell is a corner
             if (dx != 0 and dy != 0):
                 if adjcell in level['spaces']:
-                    adjacent = (adjcell, sqrt(2)*level['spaces'][adjcell]/2 + sqrt(2)*level['spaces'][cell])
+                    adjacent = (adjcell, (sqrt(2)*0.5*level['spaces'][adjcell]) + (sqrt(2)*0.5*level['spaces'][cell]))
                     # print("Diagonal adj: " + str(adjacent) + "\n")
                     adjacency_list.append(adjacent)
             # Do nothing if both change in x and y is not 0 because that is the origin cell
