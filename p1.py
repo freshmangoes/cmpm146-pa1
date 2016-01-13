@@ -22,47 +22,47 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
         Otherwise, return None.
 
     """
-
     dist = {}  # distance from source to destination
     prev = {}  # previous node in optimal path from source
     queue = []  # queue initialization
-
-
     dist[initial_position] = 0
     prev[initial_position] = None #prev from source
-
-    #queue = [start, 0]
+    #queue = [0, start]
     heappush(queue, (dist[initial_position], initial_position))
 
     while queue:
-        curr_cost, curr_node = heappop(queue)  # pop least cost node
-        print("curr_node: " + str(curr_node)+ "\n")
-        print("curr_cost: " + str(curr_cost)+ "\n")
+        # Pop least cost node
+        curr_cost, curr_node = heappop(queue)
+        # Debug statements
+        # print("curr_node: " + str(curr_node)+ "\n")
+        # print("curr_cost: " + str(curr_cost)+ "\n")\
         # Once we find the destination, break the loop
         if curr_node == destination:
             break
+        # Use navigation_edges to get adjacent cells
         adjacent = adj(graph, curr_node)
-
-        # Pushing the next node into the queue
-        for next in adjacent:
-            if next not in prev:
-                print("Previous: " + str(prev))
-                prev[next] = curr_node
-                heappush(queue, curr_node)
-        # Once destination is found, put the path into a list and return it
-        if curr_node == destination:
-            path = []
-            # While there is still a current node, continually append them into the list
-            # in reverse order.
-            while curr_node:
-                path.append(curr_node)
-                curr_node = prev[curr_node]
-            # The list containing the path is now reversed, so we reverse it to find the
-            # true path.
-            path.reverse()
-            return path
-        else:
-            return []
+        # Iterate through adjacency list and calculate cost
+        for acell, cost in adjacent:
+            # Variable to store cost of path consisting of current cost and the cost of the
+            # adjacent cell
+            pathcost = curr_cost + cost
+            if acell not in dist or pathcost < dist[acell]:
+                dist[acell] = pathcost
+                prev[acell] = curr_node
+                heappush(queue, (pathcost, acell))
+    # Build path to return
+    if curr_node == destination:
+        path = []
+        # Building path in reverse order because we're at the destination
+        while curr_node:
+            path.append(curr_node)
+            curr_node = prev[curr_node]
+        # Reversing the path
+        path.reverse()
+        return path
+    else:
+        # Return empty list if there is no path
+        return []
     pass
 
 
@@ -77,6 +77,9 @@ def dijkstras_shortest_path_to_all(initial_position, graph, adj):
     Returns:
         A dictionary, mapping destination cells to the cost of a path from the initial_position.
     """
+
+
+
     pass
 
 
@@ -110,17 +113,17 @@ def navigation_edges(level, cell):
                 # checking to make sure adjcell is a space rather than a wall
                 if adjcell in level['spaces']:
                     adjacent = (adjcell, level['spaces'][adjcell]/2 + level['spaces'][cell]/2)
-                    print("Normal adj: " + str(adjacent) + "\n")
+                    # print("Normal adj: " + str(adjacent) + "\n")
                     adjacency_list.append(adjacent)
             # if statement for diagonal cost formula, checking if cell is a corner
             if (dx != 0 and dy != 0):
                 if adjcell in level['spaces']:
                     adjacent = (adjcell, sqrt(2)*level['spaces'][adjcell]/2 + sqrt(2)*level['spaces'][cell])
-                    print("Diagonal adj: " + str(adjacent) + "\n")
+                    # print("Diagonal adj: " + str(adjacent) + "\n")
                     adjacency_list.append(adjacent)
             # Do nothing if both change in x and y is not 0 because that is the origin cell
-    print("Adjacency list:")
-    print(adjacency_list)
+    # print("Adjacency list:")
+    # print(adjacency_list)
     return adjacency_list
     pass
 
