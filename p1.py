@@ -32,12 +32,12 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
     prev[initial_position] = None #prev from source
 
     #queue = [start, 0]
-    heappush(queue, (initial_position, dist[initial_position]))
+    heappush(queue, (dist[initial_position], initial_position))
 
     while queue:
-        curr_node, curr_cost = heappop(queue)  # pop least cost node
-        print("curr_node:")
-        print(curr_node)
+        curr_cost, curr_node = heappop(queue)  # pop least cost node
+        print("curr_node: " + str(curr_node)+ "\n")
+        print("curr_cost: " + str(curr_cost)+ "\n")
         # Once we find the destination, break the loop
         if curr_node == destination:
             break
@@ -46,6 +46,7 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
         # Pushing the next node into the queue
         for next in adjacent:
             if next not in prev:
+                print("Previous: " + str(prev))
                 prev[next] = curr_node
                 heappush(queue, curr_node)
         # Once destination is found, put the path into a list and return it
@@ -98,34 +99,27 @@ def navigation_edges(level, cell):
     """
     # List to return
     adjacency_list = []
-    dictionary = []
-
     # deltas for x coordinate
     for dx in (-1, 0, 1):
         # deltas for y coordinates
         for dy in (-1, 0, 1):
             # get adjacent cell using deltas
             adjcell = (cell[0] + dx, cell[1] + dy)
-            print(adjcell)
             # if statement for normal cost formula, checking if the cell is not in a corner
             if (dx == 0 and dy != 0) or (dx != 0 and dy == 0):
                 # checking to make sure adjcell is a space rather than a wall
                 if adjcell in level['spaces']:
-                    print("normal")
                     adjacent = (adjcell, level['spaces'][adjcell]/2 + level['spaces'][cell]/2)
-                    print("ADJACENT:")
-                    print(adjacent)
+                    print("Normal adj: " + str(adjacent) + "\n")
                     adjacency_list.append(adjacent)
             # if statement for diagonal cost formula, checking if cell is a corner
             if (dx != 0 and dy != 0):
                 if adjcell in level['spaces']:
-                    print("diagonal")
                     adjacent = (adjcell, sqrt(2)*level['spaces'][adjcell]/2 + sqrt(2)*level['spaces'][cell])
-                    print(adjacent)
+                    print("Diagonal adj: " + str(adjacent) + "\n")
                     adjacency_list.append(adjacent)
             # Do nothing if both change in x and y is not 0 because that is the origin cell
-
-
+    print("Adjacency list:")
     print(adjacency_list)
     return adjacency_list
     pass
