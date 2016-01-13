@@ -31,11 +31,13 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
     dist[initial_position] = 0
     prev[initial_position] = None #prev from source
 
-    #queue = [(0, start]
-    heappush(queue, (dist[initial_position], initial_position))
+    #queue = [start, 0]
+    heappush(queue, (initial_position, dist[initial_position]))
 
     while queue:
-        curr_node = heappop(queue)  # pop least cost node
+        curr_node, curr_cost = heappop(queue)  # pop least cost node
+        print("curr_node:")
+        print(curr_node)
         # Once we find the destination, break the loop
         if curr_node == destination:
             break
@@ -94,37 +96,38 @@ def navigation_edges(level, cell):
              ((1,1), 1.4142135623730951),
              ... ]
     """
+    # List to return
+    adjacency_list = []
+    dictionary = []
 
-    adjacencyList = []
-    xcoord, ycoord = cell
-
-    # Delta x and specified range
-    for deltax in [-1, 0, 1]:
-        # Delta y and specified range
-        for deltay in [-1, 0, 1]:
-
-            # Current delta x and delta y used to find an adjacent cell
-            adjcell = xcoord + deltax, xcoord + deltay
-
-            distance = sqrt(deltax*deltax + deltay*deltay)
-            if distance > 0 and adjcell in level['spaces']:
-                adjacencyList.append(adjcell)
-                
-
-            # # Check to see if change in x or y is equal to 0 for first cost formula
-            # if (deltax == 0 and deltay != 0) or (deltax != 0 and deltay == 0):
-            #     cost = ((0.5 * xcoord) + (0.5 * ycoord))
-            #     adjacencyList.append((cost, adjcell))
-            #
-            # # Check to see if change in both x and y is not 0 for second cost formula
-            # elif deltax != 0 and deltay != 0:
-            #     cost = ((0.5 * sqrt(2) * xcoord) + (0.5 * (sqrt(2) * ycoord))
-            #     adjacencyList.append((cost, adjcell))
-
+    # deltas for x coordinate
+    for dx in (-1, 0, 1):
+        # deltas for y coordinates
+        for dy in (-1, 0, 1):
+            # get adjacent cell using deltas
+            adjcell = (cell[0] + dx, cell[1] + dy)
+            print(adjcell)
+            # if statement for normal cost formula, checking if the cell is not in a corner
+            if (dx == 0 and dy != 0) or (dx != 0 and dy == 0):
+                # checking to make sure adjcell is a space rather than a wall
+                if adjcell in level['spaces']:
+                    print("normal")
+                    adjacent = (adjcell, level['spaces'][adjcell]/2 + level['spaces'][cell]/2)
+                    print("ADJACENT:")
+                    print(adjacent)
+                    adjacency_list.append(adjacent)
+            # if statement for diagonal cost formula, checking if cell is a corner
+            if (dx != 0 and dy != 0):
+                if adjcell in level['spaces']:
+                    print("diagonal")
+                    adjacent = (adjcell, sqrt(2)*level['spaces'][adjcell]/2 + sqrt(2)*level['spaces'][cell])
+                    print(adjacent)
+                    adjacency_list.append(adjacent)
             # Do nothing if both change in x and y is not 0 because that is the origin cell
 
-    return adjacencyList
 
+    print(adjacency_list)
+    return adjacency_list
     pass
 
 
