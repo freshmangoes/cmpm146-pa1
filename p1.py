@@ -51,7 +51,7 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
                 prev[acell] = curr_node
                 heappush(queue, (pathcost, acell))
     # Build path to return
-    
+
     if curr_node == destination:
         path = []
         # Building path in reverse order because we're at the destination
@@ -158,7 +158,7 @@ def test_route(filename, src_waypoint, dst_waypoint):
 
 
 def cost_to_all_cells(filename, src_waypoint, output_filename):
-    """ Loads a level, calculates the cost to all reachable cells from 
+    """ Loads a level, calculates the cost to all reachable cells from
     src_waypoint, then saves the result in a csv file with name output_filename.
 
     Args:
@@ -167,14 +167,14 @@ def cost_to_all_cells(filename, src_waypoint, output_filename):
         output_filename: The filename for the output csv file.
 
     """
-    
+
     # Load and display the level.
     level = load_level(filename)
     show_level(level)
 
     # Retrieve the source coordinates from the level.
     src = level['waypoints'][src_waypoint]
-    
+
     # Calculate the cost to all reachable cells from src and save to a csv file.
     costs_to_all_cells = dijkstras_shortest_path_to_all(src, level, navigation_edges)
     save_level_costs(level, costs_to_all_cells, output_filename)
