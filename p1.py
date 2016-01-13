@@ -192,8 +192,8 @@ def export_new_maze(fname, src_wp, dst_wp):
     show_level(level)
 
     # Retrieve the source and destination coordinates from the level.
-    src = level['waypoints'][src_waypoint]
-    dst = level['waypoints'][dst_waypoint]
+    src = level['waypoints'][src_wp]
+    dst = level['waypoints'][dst_wp]
 
     # Search for and display the path from src to dst.
     path = dijkstras_shortest_path(src, dst, level, navigation_edges)
@@ -206,7 +206,7 @@ def export_new_maze(fname, src_wp, dst_wp):
         print("No path possible!")
 
 if __name__ == '__main__':
-    filename, src_waypoint, dst_waypoint = 'example.txt', 'a','e'
+    filename, src_waypoint, dst_waypoint = 'example.txt', 'a','b'
 
 
     # Use this function call to find the route between two waypoints.
@@ -215,7 +215,8 @@ if __name__ == '__main__':
     # Use this function to calculate the cost to all reachable cells from an origin point.
     cost_to_all_cells(filename, src_waypoint, 'my_costs.csv')
 
-    fname, src_wp, dst_wp = 'test_maze.txt', 'a','d'
+    # Use this one for assignment testing purposes
+    fname, src_wp, dst_wp = 'my_maze.txt', 'a','d'
     export_new_maze(fname, src_wp, dst_wp)
 
 
