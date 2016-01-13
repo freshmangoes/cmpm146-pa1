@@ -83,6 +83,16 @@ def dijkstras_shortest_path_to_all(initial_position, graph, adj):
     prev = {}
     queue = []
 
+    dist[initial_position] = 0
+    prev[initial_position] = None
+
+    queue = heappush(queue, (dist[initial_position], initial_position))
+
+    while queue:
+        curr_cost, curr_node = heappop(queue)
+        
+
+
     pass
 
 
