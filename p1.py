@@ -1,4 +1,5 @@
 # Kyle Cilia
+# Alex Hoyt
 # Dijkstra's in a Dungeon
 # PA1
 # CMPM146
@@ -6,6 +7,7 @@
 from p1_support import load_level, show_level, save_level_costs
 from math import inf, sqrt
 from heapq import heappop, heappush
+import sys
 
 
 def dijkstras_shortest_path(initial_position, destination, graph, adj):
@@ -29,13 +31,9 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
     prev[initial_position] = None #prev from source
     #queue = [0, start]
     heappush(queue, (dist[initial_position], initial_position))
-
     while queue:
         # Pop least cost node
         curr_cost, curr_node = heappop(queue)
-        # Debug statements
-        # print("curr_node: " + str(curr_node)+ "\n")
-        # print("curr_cost: " + str(curr_cost)+ "\n")\
         # Once we find the destination, break the loop
         if curr_node == destination:
             break
@@ -51,7 +49,6 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
                 prev[acell] = curr_node
                 heappush(queue, (pathcost, acell))
     # Build path to return
-
     if curr_node == destination:
         path = []
         # Building path in reverse order because we're at the destination
@@ -66,7 +63,6 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
         return []
     pass
 
-
 def dijkstras_shortest_path_to_all(initial_position, graph, adj):
     """ Calculates the minimum cost to every reachable cell in a graph from the initial_position.
 
@@ -78,21 +74,29 @@ def dijkstras_shortest_path_to_all(initial_position, graph, adj):
     Returns:
         A dictionary, mapping destination cells to the cost of a path from the initial_position.
     """
-
-    dist = {}
-    prev = {}
-    queue = []
-
+    dist = {}  # distance from source to destination
+    prev = {}  # previous node in optimal path from source
+    queue = []  # queue initialization
     dist[initial_position] = 0
-    prev[initial_position] = None
+    prev[initial_position] = None #prev from source
 
-    queue = heappush(queue, (dist[initial_position], initial_position))
+    heappush(queue, (dist[initial_position], initial_position))
 
     while queue:
         curr_cost, curr_node = heappop(queue)
-        
-
-
+        # Use navigation_edges to get adjacent cells
+        adjacent = adj(graph, curr_node)
+        # Iterate through adjacency list and calculate cost
+        for acell, cost in adjacent:
+            # Variable to store cost of path consisting of current cost and the cost of the
+            # adjacent cell
+            tempcost = curr_cost + cost
+            # Updating dist of cells
+            if acell not in dist or tempcost < dist[acell]:
+                dist[acell] = tempcost
+                prev[acell] = curr_node
+                heappush(queue, (tempcost, acell))
+    return dist
     pass
 
 
@@ -126,20 +130,15 @@ def navigation_edges(level, cell):
                 # checking to make sure adjcell is a space rather than a wall
                 if adjcell in level['spaces']:
                     adjacent = (adjcell, level['spaces'][adjcell]/2 + level['spaces'][cell]/2)
-                    # print("Normal adj: " + str(adjacent) + "\n")
                     adjacency_list.append(adjacent)
             # if statement for diagonal cost formula, checking if cell is a corner
             if (dx != 0 and dy != 0):
                 if adjcell in level['spaces']:
-                    adjacent = (adjcell, sqrt(2)*level['spaces'][adjcell]/2 + sqrt(2)*level['spaces'][cell])
-                    # print("Diagonal adj: " + str(adjacent) + "\n")
+                    adjacent = (adjcell, (sqrt(2)*0.5*level['spaces'][adjcell]) + (sqrt(2)*0.5*level['spaces'][cell]))
                     adjacency_list.append(adjacent)
             # Do nothing if both change in x and y is not 0 because that is the origin cell
-    # print("Adjacency list:")
-    # print(adjacency_list)
     return adjacency_list
     pass
-
 
 def test_route(filename, src_waypoint, dst_waypoint):
     """ Loads a level, searches for a path between the given waypoints, and displays the result.
@@ -191,12 +190,12 @@ def cost_to_all_cells(filename, src_waypoint, output_filename):
 
 
 if __name__ == '__main__':
-    filename, src_waypoint, dst_waypoint = 'example.txt', 'a','e'
-
+    filename, src_waypoint, dst_waypoint = 'test_maze.txt', 'a','c'
 
     # Use this function call to find the route between two waypoints.
     test_route(filename, src_waypoint, dst_waypoint)
 
     # Use this function to calculate the cost to all reachable cells from an origin point.
     cost_to_all_cells(filename, src_waypoint, 'my_costs.csv')
+
 
