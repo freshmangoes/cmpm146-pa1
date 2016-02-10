@@ -11,25 +11,27 @@ import sys
 
 
 def dijkstras_shortest_path(initial_position, destination, graph, adj):
-    """ Searches for a minimal cost path through a graph using Dijkstra's algorithm.
+    """ Searches for a minimal cost path through a graph using Dijkstra's
+        algorithm.
 
     Args:
         initial_position: The initial cell from which the path extends.
         destination: The end location for the path.
         graph: A loaded level, containing walls, spaces, and waypoints.
-        adj: An adjacency function returning cells adjacent to a given cell as well as their respective edge costs.
+        adj: An adjacency function returning cells adjacent to a given cell as
+             well as their respective edge costs.
 
     Returns:
-        If a path exits, return a list containing all cells from initial_position to destination.
-        Otherwise, return None.
+        If a path exits, return a list containing all cells from
+        initial_position to destination. Otherwise, return None.
 
     """
     dist = {}  # distance from source to destination
     prev = {}  # previous node in optimal path from source
     queue = []  # queue initialization
     dist[initial_position] = 0
-    prev[initial_position] = None #prev from source
-    #queue = [0, start]
+    prev[initial_position] = None  # prev from source
+    # queue = [0, start]
     heappush(queue, (dist[initial_position], initial_position))
     while queue:
         # Pop least cost node
@@ -41,7 +43,8 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
         adjacent = adj(graph, curr_node)
         # Iterate through adjacency list and calculate cost
         for acell, cost in adjacent:
-            # Variable to store cost of path consisting of current cost and the cost of the
+            # Variable to store cost of path consisting of current cost and
+            # the cost of the
             # adjacent cell
             pathcost = curr_cost + cost
             if acell not in dist or pathcost < dist[acell]:
@@ -62,6 +65,7 @@ def dijkstras_shortest_path(initial_position, destination, graph, adj):
         # Return empty list if there is no path
         return []
     pass
+
 
 def dijkstras_shortest_path_to_all(initial_position, graph, adj):
     """ Calculates the minimum cost to every reachable cell in a graph from the initial_position.
